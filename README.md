@@ -1,32 +1,63 @@
 # EmailVerifier SaaS Platform
 
-A **fully functional, production-ready SaaS email verification platform** with credit-based usage, superadmin control, and WordPress/WooCommerce integration.
+A **fully functional, production-ready SaaS email verification platform** — available as both a Next.js 14 web app (Vercel) and a Docker-based FastAPI backend.
 
-## 📦 Tech Stack
+## 🚀 Next.js App (Vercel Deployment)
 
-| Layer | Technology |
-|-------|-----------|
-| **Backend** | Python 3.11 · FastAPI · SQLAlchemy (async) · Alembic |
-| **Database** | PostgreSQL 16 |
-| **Cache** | Redis 7 |
-| **Auth** | JWT (HS256) + API Key header |
-| **Frontend** | React 18 · Vite · TailwindCSS · Recharts |
-| **Deployment** | Docker · docker-compose |
+The primary deployment target is Vercel with Next.js 14.
 
----
-
-## 🚀 Quick Start
-
-### 1. Clone & configure
+### Quick Start
 
 ```bash
 git clone https://github.com/AbdulRauf7298/emailverifier.git
 cd emailverifier
-cp .env.example .env
-# Edit .env with your secrets
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
+
+# Set up database schema
+npx prisma generate
+npx prisma db push
+
+# Start development server
+npm run dev
 ```
 
-### 2. Run with Docker Compose
+Visit `http://localhost:3000`
+
+### Tech Stack (Next.js App)
+
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | Next.js 14 (App Router) |
+| **Language** | TypeScript |
+| **Database** | PostgreSQL via Supabase + Prisma ORM |
+| **Auth** | NextAuth.js (Google OAuth + Credentials) |
+| **Storage** | Cloudinary |
+| **Cache** | Upstash Redis |
+| **Email** | Gmail SMTP via Nodemailer |
+| **UI** | Tailwind CSS |
+| **Deployment** | Vercel |
+
+### Deploy to Vercel
+
+1. Push to GitHub
+2. Go to [vercel.com](https://vercel.com) → New Project → Import from GitHub
+3. Add environment variables (see [DEPLOYMENT_SETUP_GUIDE.md](./DEPLOYMENT_SETUP_GUIDE.md))
+4. Deploy!
+
+See the full **[Deployment Setup Guide](./DEPLOYMENT_SETUP_GUIDE.md)** for step-by-step instructions.
+
+---
+
+## 🐳 Docker Backend (Alternative)
+
+The original Python FastAPI backend is also available for Docker-based deployment.
+
 
 ```bash
 docker-compose up --build
