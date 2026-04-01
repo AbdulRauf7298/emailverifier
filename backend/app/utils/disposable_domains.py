@@ -17,9 +17,9 @@ DISPOSABLE_DOMAINS = {
     "despam.it", "e4ward.com", "myspaceinc.com", "myspaceinc.net",
     "objectmail.com", "ownmail.net", "petml.com", "sharedmailbox.org",
     "spamfree.eu", "super-auswahl.de", "tempemail.net", "tempthe.net",
-    "throwam.com", "uggsrock.com", "xn--0-6cdj3aflg.com", "beefmilk.com",
+    "uggsrock.com", "xn--0-6cdj3aflg.com", "beefmilk.com",
     "binkmail.com", "bspamfree.org", "bugmenot.com", "chogmail.com",
-    "cool.fr.nf", "deadaddress.com", "devnullmail.com", "dispostable.com",
+    "deadaddress.com", "devnullmail.com",
     "dodgeit.com", "dodgemail.de", "dontreg.com", "dontsendmespam.de",
 }
 

@@ -1,4 +1,5 @@
 """WooCommerce webhook router for credit top-up on purchase."""
+import base64
 import hmac
 import hashlib
 import logging
@@ -34,7 +35,6 @@ def _verify_woocommerce_signature(request_body: bytes, signature: str) -> bool:
         request_body,
         hashlib.sha256,
     ).digest()
-    import base64
     expected_b64 = base64.b64encode(expected).decode()
     return hmac.compare_digest(expected_b64, signature)
 

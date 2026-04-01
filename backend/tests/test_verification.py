@@ -81,7 +81,7 @@ async def test_verify_syntax_validation():
     assert validate_syntax("valid@example.com") == (True, None)
     assert validate_syntax("invalid-email")[0] is False
     assert validate_syntax("no@domain")[0] is False
-    assert validate_syntax("gmial.com@test.com")[0] is True  # syntax valid, different domain
+    assert validate_syntax("gmial.com@test.com")[0] is True  # syntax is valid; typo detection only applies to the domain part
 
 
 async def test_disposable_detection():

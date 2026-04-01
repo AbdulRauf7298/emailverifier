@@ -37,11 +37,10 @@ async def verify_single_email(
     cached = await get_cached(ck)
 
     if not cached:
-        # Deduct credit
-        await deduct_credits(db, current_user, settings.CREDITS_PER_VERIFICATION, "single_verification")
-
-        # Perform verification
+        # Perform verification first, then deduct credit on success
         result_data = await verify_email(email)
+
+        await deduct_credits(db, current_user, settings.CREDITS_PER_VERIFICATION, "single_verification")
 
         # Store result
         verification = VerificationResult(
@@ -117,8 +116,8 @@ async def verify_bulk_emails(
     if not emails:
         raise HTTPException(status_code=400, detail="No emails found in CSV")
 
-    if len(emails) > 10000:
-        raise HTTPException(status_code=400, detail="Maximum 10,000 emails per bulk job")
+    if len(emails) > settings.MAX_BULK_EMAILS:
+        raise HTTPException(status_code=400, detail=f"Maximum {settings.MAX_BULK_EMAILS:,} emails per bulk job")
 
     # Check credits
     if current_user.credits < len(emails):
@@ -264,8 +263,8 @@ async def _process_bulk_job(job_id: str, emails: list[str], user_id: str):
 
                     processed += 1
 
-                    # Commit in batches of 50
-                    if processed % 50 == 0:
+                    # Commit in batches
+                    if processed % settings.BULK_COMMIT_BATCH_SIZE == 0:
                         job.processed_emails = processed
                         job.valid_count = valid_count
                         job.invalid_count = invalid_count
