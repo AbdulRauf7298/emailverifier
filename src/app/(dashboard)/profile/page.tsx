@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function ProfilePage() {
   const { data: session, update } = useSession();
@@ -37,9 +38,11 @@ export default function ProfilePage() {
         {/* Avatar */}
         <div className="flex items-center gap-4 mb-6 pb-6 border-b">
           {session?.user?.image ? (
-            <img
+            <Image
               src={session.user.image}
               alt="Avatar"
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full"
             />
           ) : (

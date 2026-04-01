@@ -1,10 +1,31 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
+import { Session } from "next-auth";
 import { prisma } from "@/lib/db";
 import { compare, hash } from "bcryptjs";
+
+interface ExtendedUser extends User {
+  role?: string;
+}
+
+interface ExtendedToken extends JWT {
+  role?: string;
+  id?: string;
+}
+
+interface ExtendedSession extends Session {
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+    id?: string;
+  };
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -53,15 +74,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
-        token.id = user.id;
+        const extUser = user as ExtendedUser;
+        (token as ExtendedToken).role = extUser.role;
+        (token as ExtendedToken).id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        (session.user as any).role = token.role;
-        (session.user as any).id = token.id;
+      const extToken = token as ExtendedToken;
+      const extSession = session as ExtendedSession;
+      if (extSession.user) {
+        extSession.user.role = extToken.role;
+        extSession.user.id = extToken.id;
       }
       return session;
     },

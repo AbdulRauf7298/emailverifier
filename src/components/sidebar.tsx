@@ -19,7 +19,7 @@ const adminItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const isAdmin = (session?.user as any)?.role === "ADMIN";
+  const isAdmin = (session?.user as { role?: string } | null)?.role === "ADMIN";
 
   const allItems = isAdmin ? [...navItems, ...adminItems] : navItems;
 
