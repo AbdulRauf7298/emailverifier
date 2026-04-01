@@ -25,6 +25,15 @@ frontend/dist/
 frontend/.env.local
 frontend/.env.*.local
 
+# Next.js
+.next/
+out/
+
+# Environment files (contain secrets — use .env.example as template)
+.env.local
+.env.production
+.env.*.local
+
 # Docker
 .dockerignore
 
@@ -37,3 +46,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Prisma generated (regenerated on install)
+prisma/generated/
+
+# TypeScript build info
+*.tsbuildinfo
